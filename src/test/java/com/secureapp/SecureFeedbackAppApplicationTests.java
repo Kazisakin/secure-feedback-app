@@ -1,4 +1,4 @@
-package com.secureapp.secure_feedback_app;
+package com.secureapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

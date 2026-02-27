@@ -1,54 +1,51 @@
-# Secure Feedback App
+# Secure Feedback Application
 
-A secure web-based application for CS4417 - Software Security (Winter 2026).
+A simple web application for collecting user feedback with focus on secure implementation practices.
 
-## Tech Stack
+## Technology Stack
 
-- Backend: Spring Boot (Java)
-- Security: Spring Security
-- Database: MariaDB
-- Password Hashing: BCrypt
-- Frontend: HTML, CSS, JavaScript
-- Build Tool: Maven
+- Java 21
+- Spring Boot 3.2.3
+- Spring Security
+- PostgreSQL 16
+- Docker & Docker Compose
+- Thymeleaf
 
-## Features
+## Project Structure
 
-- User registration and login
-- Change password
-- Role-based access control (User/Admin)
-- Secure feedback submission
-- Input validation
+```
+src/main/java/com/secureapp/
+├── config/       SecurityConfig
+├── controller/   RegistrationController
+├── dto/          RegistrationForm
+├── entity/       User
+├── repository/   UserRepository
+└── service/      UserService
+```
+
+## Quick Start
+
+### With Docker
+
+```bash
+docker-compose up -d
+```
+
+Access at: http://localhost:8080
+
+### Local Development
+
+```bash
+./mvnw spring-boot:run
+```
+
+Database will initialize from `init-db/01-init.sql`
 
 ## Database Schema
 
-### Users Table
+- `users` - User accounts (username, email, password, role, timestamps)
+- `feedback` - User feedback entries (name, email, message, timestamp)
 
-| Column | Type | Description |
-|--------|------|-------------|
-| id | INT | Primary Key, Auto Increment |
-| username | VARCHAR(50) | Unique, Not Null |
-| email | VARCHAR(100) | Unique, Not Null |
-| password_hash | VARCHAR(255) | Not Null |
-| salt | VARCHAR(255) | Not Null |
-| role | VARCHAR(20) | USER or ADMIN |
-| created_at | TIMESTAMP | Auto-generated |
+## Configuration
 
-### Feedback Table
-
-| Column | Type | Description |
-|--------|------|-------------|
-| id | INT | Primary Key, Auto Increment |
-| user_id | INT | Foreign Key to Users |
-| name | VARCHAR(100) | Not Null |
-| email | VARCHAR(100) | Not Null |
-| subject | VARCHAR(200) | Optional |
-| message | TEXT | Not Null |
-| submitted_at | TIMESTAMP | Auto-generated |
-
-## Security Measures
-
-- BCrypt password hashing
-- Parameterized queries to prevent SQL injection
-- Input validation and output encoding
-- Generic error messages
-- Least privilege principle
+Edit `.env` file to change database credentials and application port.

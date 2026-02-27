@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; max-width: 480px; }
+        h2 { text-align: center; margin-bottom: 1.5rem; color: #333; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 4px; font-size: 0.9rem; color: #555; }
+        input { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; }
+        input:focus { outline: none; border-color: #4a90e2; }
+        .error { color: #c0392b; font-size: 0.82rem; margin-top: 3px; }
+        .alert-error { background: #fdecea; border: 1px solid #f5c6cb; color: #c0392b; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem; }
+        .alert-success { background: #eafaf1; border: 1px solid #a9dfbf; color: #1e8449; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem; }
+        button { width: 100%; padding: 0.75rem; background: #4a90e2; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; margin-top: 0.5rem; }
+        button:hover { background: #357abd; }
+        .hint { font-size: 0.78rem; color: #888; margin-top: 3px; }
+        .row { display: flex; gap: 1rem; }
+        .row .form-group { flex: 1; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>Create Account</h2>
+
+    <div class="alert-success" th:if="${param.success}">
+        <span th:text="'Registration successful. You can now log in.'"></span>
+    </div>
+
+    <div class="alert-error" th:if="${registrationError}" th:text="${registrationError}"></div>
+
+    <form th:action="@{/register}" th:object="${form}" method="post" autocomplete="off" novalidate>
+
+        <div class="row">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" th:field="*{firstName}" maxlength="50" autocomplete="given-name"/>
+                <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" th:field="*{lastName}" maxlength="50" autocomplete="family-name"/>
+                <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" th:field="*{email}" maxlength="100" autocomplete="email"/>
+            <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" th:field="*{username}" maxlength="50" autocomplete="username"/>
+            <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" th:field="*{password}" maxlength="128" autocomplete="new-password"/>
+            <div class="hint">Min 12 characters with uppercase, lowercase, digit, and special character.</div>
+            <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" th:field="*{confirmPassword}" maxlength="128" autocomplete="new-password"/>
+            <div class="error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+</div>
+</body>
+</html>
