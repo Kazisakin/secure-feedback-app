@@ -27,6 +27,17 @@ public class UserService {
     }
 
     @Transactional
+    public boolean changePassword(String username, String currentPassword, String newPassword) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null || !passwordEncoder.matches(currentPassword, user.getPassword())) {
+            return false;
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return true;
+    }
+
+    @Transactional
     public void register(RegistrationForm form) {
         User user = new User();
         user.setFirstName(form.getFirstName());
@@ -34,7 +45,6 @@ public class UserService {
         user.setEmail(form.getEmail().toLowerCase());
         user.setUsername(form.getUsername());
         user.setPassword(passwordEncoder.encode(form.getPassword()));
-        user.setRole("USER");
         userRepository.save(user);
     }
 }

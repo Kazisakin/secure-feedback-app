@@ -1,0 +1,17 @@
+.container {
+    max-width: 480px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.row {
+    display: flex;
+    gap: 15px;
+}
+
+.row .form-group {
+    flex: 1;
+}

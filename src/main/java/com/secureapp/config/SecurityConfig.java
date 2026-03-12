@@ -29,7 +29,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         .formLogin(form -> form
             .loginPage("/login")
-            .defaultSuccessUrl("/feedback", true)
+            .defaultSuccessUrl("/home", true)
             .permitAll()
         )
 

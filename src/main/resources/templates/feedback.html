@@ -1,30 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Feedback</title>
+    <meta charset="UTF-8">
+    <title>Submit Feedback</title>
+    <link rel="stylesheet" th:href="@{/css/feedback.css}">
 </head>
 <body>
 
-<h2>Secure Feedback Page</h2>
+<div class="container">
 
-<p>You are logged in successfully.</p>
+    <h2>Submit Feedback</h2>
 
-<form>
-    <label>Name</label>
-    <input type="text">
+    <!--
+        TODO: Display success/error alert messages here
+        TODO: Build the feedback form (name, email, message fields)
+        TODO: Add form validation and submission logic
+        TODO: Add a Back to Home link
+    -->
 
-    <label>Email</label>
-    <input type="email">
-
-    <label>Message</label>
-    <textarea></textarea>
-
-    <button type="submit">Submit Feedback</button>
-</form>
-
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Logout</button>
-</form>
+</div>
 
 </body>
 </html>

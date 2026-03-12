@@ -3,53 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .card { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; max-width: 420px; }
-        h2 { text-align: center; margin-bottom: 1.5rem; }
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 4px; }
-        input { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px; }
-        button { width: 100%; padding: 0.75rem; background: #4a90e2; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #357abd; }
-        .alert-error { color: #c0392b; margin-bottom: 10px; }
-        .alert-success { color: #1e8449; margin-bottom: 10px; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
 
-<div class="card">
+<div class="container">
 
     <h2>Login</h2>
 
     <div class="alert-error" th:if="${param.error}">
-        Invalid username or password
+        Invalid username or password.
     </div>
 
     <div class="alert-success" th:if="${param.logout}">
-    You have been logged out successfully.
-</div>
+        You have been logged out successfully.
+    </div>
+
+    <div class="alert-success" th:if="${param.registered}">
+        Registration successful. Please log in.
+    </div>
 
     <form th:action="@{/login}" method="post">
 
         <div class="form-group">
-            <label>Username</label>
-            <input type="text" name="username" required autocomplete="username">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required autocomplete="username">
         </div>
 
         <div class="form-group">
-            <label>Password</label>
-            <input type="password" name="password" required autocomplete="current-password">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password">
         </div>
 
         <button type="submit">Login</button>
 
     </form>
 
-    <div class="alert-success" th:if="${param.registered}">
-    Registration successful. Please log in.
-</div>
+    <div class="text-center">
+        Don't have an account? <a th:href="@{/register}">Register here</a>
+    </div>
 
 </div>
 

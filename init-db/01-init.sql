@@ -9,12 +9,5 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS feedback (
-    id BIGSERIAL PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    message TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
+-- TODO: Create the feedback table
+-- Columns needed: id, user_id (FK to users), name, email, message, created_at
