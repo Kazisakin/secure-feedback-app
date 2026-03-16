@@ -6,8 +6,14 @@ CREATE TABLE IF NOT EXISTS users (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'USER',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
--- TODO: Create the feedback table
--- Columns needed: id, user_id (FK to users), name, email, message, created_at
+CREATE TABLE IF NOT EXISTS feedback (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    message VARCHAR(1000) NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    user_id BIGINT NOT NULL REFERENCES users(id)
+);
