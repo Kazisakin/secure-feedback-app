@@ -6,6 +6,7 @@ import com.secureapp.entity.User;
 import com.secureapp.repository.FeedbackRepository;
 import com.secureapp.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class FeedbackService {
@@ -30,4 +31,7 @@ public class FeedbackService {
 
         feedbackRepository.save(feedback);
     }
+    public List<Feedback> getAllFeedback() {
+    return feedbackRepository.findAll();
+  }
 }
