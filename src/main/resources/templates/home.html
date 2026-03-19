@@ -19,6 +19,12 @@
 
     <h3>Feedback</h3>
     <a class="btn" th:href="@{/feedback}">Submit Feedback</a>
+    
+    <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+    <hr class="divider">
+    <h3>Admin</h3>
+    <a class="btn" th:href="@{/admin}">Go to Admin Dashboard</a>
+</div>
 
     <hr class="divider">
 
