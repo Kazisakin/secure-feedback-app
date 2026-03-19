@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Feedback</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+
+<div class="container">
+    <h2>All Feedback</h2>
+
+    <a class="btn" th:href="@{/admin}">Admin Dashboard</a>
+    <a class="btn btn-grey" th:href="@{/home}">Back Home</a>
+
+    <hr class="divider">
+
+    <table th:if="${!#lists.isEmpty(feedbackList)}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Message</th>
+            <th>User</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${feedbackList}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.email}"></td>
+            <td th:text="${item.message}"></td>
+            <td th:text="${item.user.username}"></td>
+            <td th:text="${item.createdAt}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p th:if="${#lists.isEmpty(feedbackList)}">No feedback available.</p>
+</div>
+
+</body>
+</html>
