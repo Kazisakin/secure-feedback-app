@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div class="container">
+    <h2>Admin Dashboard</h2>
+
+    <div class="stats">
+        <div class="card">
+            <h3>Total Feedback</h3>
+            <p th:text="${feedbackCount}"></p>
+        </div>
+
+        <div class="card">
+            <h3>Total Users</h3>
+            <p th:text="${userCount}"></p>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <a class="btn" th:href="@{/admin/feedback}">View All Feedback</a>
+    <a class="btn btn-grey" th:href="@{/home}">Back Home</a>
+</div>
+</body>
+</html>
