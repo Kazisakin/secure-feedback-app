@@ -23,15 +23,18 @@ public class FeedbackService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
 
+        String fullName = user.getFirstName() + " " + user.getLastName();
+
         Feedback feedback = new Feedback();
-        feedback.setName(form.getName());
-        feedback.setEmail(form.getEmail());
+        feedback.setName(fullName);
+        feedback.setEmail(user.getEmail());
         feedback.setMessage(form.getMessage());
         feedback.setUser(user);
 
         feedbackRepository.save(feedback);
     }
+
     public List<Feedback> getAllFeedback() {
-    return feedbackRepository.findAll();
-  }
+        return feedbackRepository.findAll();
+    }
 }

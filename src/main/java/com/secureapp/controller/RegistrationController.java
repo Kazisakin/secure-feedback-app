@@ -40,7 +40,7 @@ public class RegistrationController {
         }
 
         if (userService.usernameExists(form.getUsername()) || userService.emailExists(form.getEmail())) {
-            model.addAttribute("registrationError", "Registration failed. Please try again with different credentials.");
+            model.addAttribute("registrationError", "Registration could not be completed. Please try again.");
             return "register";
         }
 

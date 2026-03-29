@@ -1,5 +1,6 @@
 package com.secureapp.dto;
 
+import com.secureapp.util.ValidationConstants;
 import jakarta.validation.constraints.*;
 
 public class RegistrationForm {
@@ -24,8 +25,8 @@ public class RegistrationForm {
     @NotBlank(message = "Password is required.")
     @Size(min = 12, max = 128, message = "Password must be 12-128 characters.")
     @Pattern(
-        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z\\d]).{12,128}$",
-        message = "Password must have uppercase, lowercase, digit, and special character."
+        regexp = ValidationConstants.PASSWORD_REGEX,
+        message = ValidationConstants.PASSWORD_MESSAGE
     )
     private String password;
 
