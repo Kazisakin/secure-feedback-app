@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Users</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div class="container">
+    <h2>Manage Users</h2>
+
+    <a class="btn btn-grey" th:href="@{/admin}">Admin Dashboard</a>
+
+    <p th:if="${param.deleted}" style="color:green;">User deleted successfully.</p>
+    <p th:if="${param.error}" style="color:red;">This action is not allowed.</p>
+
+    <hr class="divider">
+
+    <table th:if="${!#lists.isEmpty(users)}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Role</th>
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${user.role}"></td>
+            <td th:text="${user.createdAt}"></td>
+            <td>
+                <form th:action="@{/admin/users/delete/{id}(id=${user.id})}" method="post">
+                    <button type="submit" onclick="return confirm('Delete this user?')">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p th:if="${#lists.isEmpty(users)}">No users found.</p>
+</div>
+</body>
+</html>

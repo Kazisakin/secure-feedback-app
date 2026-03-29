@@ -1,7 +1,6 @@
 package com.secureapp.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Entity

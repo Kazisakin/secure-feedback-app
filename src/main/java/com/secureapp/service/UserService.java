@@ -7,6 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -24,6 +27,28 @@ public class UserService {
 
     public boolean emailExists(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public List<User> getAllUsers() {
+        List<User> allUsers = userRepository.findAll();
+        List<User> regularUsers = new ArrayList<>();
+
+        for (User user : allUsers) {
+            if (user.getRole().equals("USER")) {
+                regularUsers.add(user);
+            }
+        }
+
+        return regularUsers;
+    }
+
+    @Transactional
+    public void deleteUserByAdmin(Long id, String currentUsername) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (user.getUsername().equals(currentUsername)) {
+            throw new IllegalStateException("Admin cannot delete their own account.");
+        }
+        userRepository.delete(user);
     }
 
     @Transactional

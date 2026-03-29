@@ -17,8 +17,10 @@
 
     <hr class="divider">
 
+    <div th:if="${#authorization.expression('hasRole(''USER'')')}">
     <h3>Feedback</h3>
     <a class="btn" th:href="@{/feedback}">Submit Feedback</a>
+    </div>
     
     <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
     <hr class="divider">

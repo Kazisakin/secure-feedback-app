@@ -19,41 +19,50 @@ public class SecurityConfig {
     }
 
     @Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-    http
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/", "/login", "/register", "/css/**", "/js/**").permitAll()
-            .requestMatchers("/admin/**").hasRole("ADMIN")
-            .anyRequest().authenticated()
-        )
+        http
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/", "/login", "/register", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/feedback/**").hasRole("USER")
+                .anyRequest().authenticated()
+            )
 
-        .formLogin(form -> form
-            .loginPage("/login")
-            .defaultSuccessUrl("/home", true)
-            .permitAll()
-        )
+            .formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/home", true)
+                .permitAll()
+            )
 
-        .logout(logout -> logout
-            .logoutSuccessUrl("/login?logout")
-            .permitAll()
-        )
+            .logout(logout -> logout
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
+            )
 
-        .sessionManagement(session ->
-            session.sessionFixation().migrateSession()
-        );
+            .sessionManagement(session ->
+                session.sessionFixation().migrateSession()
+            )
 
-    return http.build();
-}
+            .headers(headers -> headers
+                .frameOptions(frameOptions -> frameOptions.deny())
+                .httpStrictTransportSecurity(hsts -> hsts
+                    .includeSubDomains(true)
+                    .maxAgeInSeconds(31536000)
+                )
+                .contentSecurityPolicy(csp -> csp
+                    .policyDirectives("default-src 'self'; style-src 'self' 'unsafe-inline'")
+                )
+            );
+
+        return http.build();
+    }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
 

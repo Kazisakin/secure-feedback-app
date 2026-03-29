@@ -5,18 +5,16 @@ services:
     image: postgres:16-alpine
     container_name: secure-feedback-db
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-secure_feedback}
-      POSTGRES_USER: ${POSTGRES_USER:-feedback_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secure_password_123}
-    ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-db:/docker-entrypoint-initdb.d
     networks:
       - feedback-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-feedback_user} -d ${POSTGRES_DB:-secure_feedback}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -30,11 +28,11 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-secure_feedback}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-feedback_user}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-secure_password_123}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "${APP_PORT:-8080}:8080"
+      - "${APP_PORT}:8080"
     networks:
       - feedback-network
     restart: unless-stopped
