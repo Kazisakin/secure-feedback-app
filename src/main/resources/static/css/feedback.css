@@ -1,5 +1,24 @@
-body { font-family: Arial, sans-serif; background-color: #f0f2f5; padding: 20px; }
+.container {
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
-.container { max-width: 480px; margin: 60px auto; padding: 30px; background-color: white; border: 1px solid #ccc; border-radius: 5px; }
+.form-group {
+    margin-bottom: 15px;
+}
 
-h2 { text-align: center; }
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    height: 140px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}

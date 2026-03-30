@@ -1,6 +1,8 @@
 package com.secureapp.controller;
 
 import com.secureapp.dto.ChangePasswordForm;
+import com.secureapp.dto.UpdateProfileForm;
+import com.secureapp.entity.User;
 import com.secureapp.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -9,12 +11,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/change-password")
 public class ProfileController {
 
     private final UserService userService;
@@ -23,13 +23,50 @@ public class ProfileController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public String showForm(Model model) {
+    @GetMapping("/profile")
+    public String showProfile(Model model, Principal principal) {
+        User user = userService.getUserByUsername(principal.getName());
+        UpdateProfileForm form = new UpdateProfileForm();
+        form.setFirstName(user.getFirstName());
+        form.setLastName(user.getLastName());
+        form.setEmail(user.getEmail());
+        model.addAttribute("form", form);
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("createdAt", user.getCreatedAt());
+        return "profile";
+    }
+
+    @PostMapping("/profile")
+    public String updateProfile(@Valid @ModelAttribute("form") UpdateProfileForm form,
+                                BindingResult result, Model model, Principal principal) {
+
+        if (result.hasErrors()) {
+            User user = userService.getUserByUsername(principal.getName());
+            model.addAttribute("username", user.getUsername());
+            model.addAttribute("createdAt", user.getCreatedAt());
+            return "profile";
+        }
+
+        boolean success = userService.updateProfile(principal.getName(), form);
+
+        if (!success) {
+            User user = userService.getUserByUsername(principal.getName());
+            model.addAttribute("username", user.getUsername());
+            model.addAttribute("createdAt", user.getCreatedAt());
+            model.addAttribute("error", "That email is already in use by another account.");
+            return "profile";
+        }
+
+        return "redirect:/profile?updated";
+    }
+
+    @GetMapping("/change-password")
+    public String showPasswordForm(Model model) {
         model.addAttribute("form", new ChangePasswordForm());
         return "change-password";
     }
 
-    @PostMapping
+    @PostMapping("/change-password")
     public String changePassword(@Valid @ModelAttribute("form") ChangePasswordForm form,
                                  BindingResult result, Model model, Principal principal) {
 

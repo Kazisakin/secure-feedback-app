@@ -1,6 +1,7 @@
 package com.secureapp.service;
 
 import com.secureapp.dto.RegistrationForm;
+import com.secureapp.dto.UpdateProfileForm;
 import com.secureapp.entity.User;
 import com.secureapp.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,30 @@ public class UserService {
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
+    @Transactional
+    public boolean updateProfile(String username, UpdateProfileForm form) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            return false;
+        }
+
+        String newEmail = form.getEmail().toLowerCase();
+
+        if (!user.getEmail().equals(newEmail) && userRepository.existsByEmail(newEmail)) {
+            return false;
+        }
+
+        user.setFirstName(form.getFirstName());
+        user.setLastName(form.getLastName());
+        user.setEmail(newEmail);
+        userRepository.save(user);
+        return true;
     }
 
     public boolean usernameExists(String username) {
