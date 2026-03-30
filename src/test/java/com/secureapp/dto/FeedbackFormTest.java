@@ -20,43 +20,35 @@ class FeedbackFormTest {
     }
 
     @Test
-    void emptyName_failsNotBlank() {
+    void blankMessage_failsNotBlank() {
         FeedbackForm form = new FeedbackForm();
-        form.setName("");
-        form.setEmail("test@test.com");
-        form.setMessage("This is a valid message.");
-
-        Set<ConstraintViolation<FeedbackForm>> violations = validator.validate(form);
-        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("name")));
-    }
-
-    @Test
-    void invalidEmail_failsEmailConstraint() {
-        FeedbackForm form = new FeedbackForm();
-        form.setName("Apoorva");
-        form.setEmail("notanemail");
-        form.setMessage("This is a valid message.");
-
-        Set<ConstraintViolation<FeedbackForm>> violations = validator.validate(form);
-        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("email")));
-    }
-
-    @Test
-    void shortMessage_failsSizeConstraint() {
-        FeedbackForm form = new FeedbackForm();
-        form.setName("Apoorva");
-        form.setEmail("test@test.com");
-        form.setMessage("short");
+        form.setMessage("");
 
         Set<ConstraintViolation<FeedbackForm>> violations = validator.validate(form);
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("message")));
     }
 
     @Test
-    void validForm_passesAllConstraints() {
+    void shortMessage_failsSizeConstraint() {
         FeedbackForm form = new FeedbackForm();
-        form.setName("Apoorva");
-        form.setEmail("test@test.com");
+        form.setMessage("tooshort");
+
+        Set<ConstraintViolation<FeedbackForm>> violations = validator.validate(form);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("message")));
+    }
+
+    @Test
+    void tooLongMessage_failsSizeConstraint() {
+        FeedbackForm form = new FeedbackForm();
+        form.setMessage("a".repeat(1001));
+
+        Set<ConstraintViolation<FeedbackForm>> violations = validator.validate(form);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("message")));
+    }
+
+    @Test
+    void validMessage_passesAllConstraints() {
+        FeedbackForm form = new FeedbackForm();
         form.setMessage("This is a perfectly valid feedback message.");
 
         Set<ConstraintViolation<FeedbackForm>> violations = validator.validate(form);
