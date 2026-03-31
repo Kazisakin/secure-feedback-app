@@ -23,9 +23,8 @@ public class SecurityConfig {
 
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/register", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/", "/login", "/register", "/feedback/**", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/feedback/**").hasRole("USER")
                 .anyRequest().authenticated()
             )
 
@@ -51,7 +50,7 @@ public class SecurityConfig {
                     .maxAgeInSeconds(31536000)
                 )
                 .contentSecurityPolicy(csp -> csp
-                    .policyDirectives("default-src 'self'; style-src 'self' 'unsafe-inline'")
+                    .policyDirectives("default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'")
                 )
             );
 

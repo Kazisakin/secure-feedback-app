@@ -2,6 +2,8 @@ package com.secureapp.controller;
 
 import com.secureapp.dto.FeedbackForm;
 import com.secureapp.service.FeedbackService;
+import com.secureapp.service.GuestRateLimitService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +20,11 @@ import java.security.Principal;
 public class FeedbackController {
 
     private final FeedbackService feedbackService;
+    private final GuestRateLimitService guestRateLimitService;
 
-    public FeedbackController(FeedbackService feedbackService) {
+    public FeedbackController(FeedbackService feedbackService, GuestRateLimitService guestRateLimitService) {
         this.feedbackService = feedbackService;
+        this.guestRateLimitService = guestRateLimitService;
     }
 
     @GetMapping
@@ -34,13 +38,39 @@ public class FeedbackController {
             @Valid @ModelAttribute("feedbackForm") FeedbackForm form,
             BindingResult result,
             Principal principal,
+            HttpServletRequest request,
             Model model) {
+
+        boolean isGuest = (principal == null);
+
+        if (isGuest) {
+            String ip = request.getRemoteAddr();
+
+            if (!guestRateLimitService.isAllowed(ip)) {
+                model.addAttribute("rateLimitError", "You have reached the maximum of 3 submissions per hour. Please try again later.");
+                return "feedback";
+            }
+
+            if (form.getName() == null || form.getName().isBlank()) {
+                result.rejectValue("name", "required", "Name is required.");
+            }
+
+            if (form.getEmail() == null || form.getEmail().isBlank()) {
+                result.rejectValue("email", "required", "Email is required.");
+            }
+        }
 
         if (result.hasErrors()) {
             return "feedback";
         }
 
-        feedbackService.saveFeedback(form, principal.getName());
+        if (isGuest) {
+            guestRateLimitService.recordSubmission(request.getRemoteAddr());
+            feedbackService.saveFeedbackForGuest(form);
+        } else {
+            feedbackService.saveFeedbackForUser(form, principal.getName());
+        }
+
         return "redirect:/feedback?submitted";
     }
 }

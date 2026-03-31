@@ -2,44 +2,67 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Feedback</title>
+    <title>All Feedback</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
     <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
 
 <div class="container">
-    <h2>All Feedback</h2>
 
-    <a class="btn" th:href="@{/admin}">Admin Dashboard</a>
-    <a class="btn btn-grey" th:href="@{/home}">Back Home</a>
+    <div class="page-header">
+        <h2>All Feedback</h2>
+        <a class="back-link" th:href="@{/admin}">← Dashboard</a>
+    </div>
 
-    <hr class="divider">
+    <div class="table-meta">
+        <span class="row-count" th:text="${#lists.size(feedbackList)} + ' entries'"></span>
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="registered">Registered</button>
+            <button class="filter-btn" data-filter="guest">Guest</button>
+        </div>
+    </div>
 
     <table th:if="${!#lists.isEmpty(feedbackList)}">
         <thead>
         <tr>
-            <th>ID</th>
+            <th>#</th>
             <th>Name</th>
             <th>Email</th>
             <th>Message</th>
-            <th>User</th>
+            <th>Account</th>
             <th>Date</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item : ${feedbackList}">
+        <tr th:each="item : ${feedbackList}"
+            th:attr="data-account=${item.user != null ? 'registered' : 'guest'}">
             <td th:text="${item.id}"></td>
             <td th:text="${item.name}"></td>
-            <td th:text="${item.email}"></td>
-            <td th:text="${item.message}"></td>
-            <td th:text="${item.user.username}"></td>
-            <td th:text="${item.createdAt}"></td>
+            <td class="email-cell">
+                <div th:text="${item.email}"></div>
+                <span class="badge badge-unverified" th:if="${item.user == null}">Unverified</span>
+            </td>
+            <td class="msg-cell">
+                <div class="msg-text" th:text="${item.message}"></div>
+                <div class="msg-tooltip" th:text="${item.message}"></div>
+            </td>
+            <td>
+                <span th:if="${item.user != null}" th:text="${item.user.username}"></span>
+                <span class="badge badge-guest" th:if="${item.user == null}">Guest</span>
+            </td>
+            <td class="time-ago" th:text="${#temporals.format(item.createdAt, 'dd MMM yyyy HH:mm')}"></td>
         </tr>
         </tbody>
     </table>
 
-    <p th:if="${#lists.isEmpty(feedbackList)}">No feedback available.</p>
+    <div class="empty-state" th:if="${#lists.isEmpty(feedbackList)}">No feedback submitted yet.</div>
+
 </div>
 
+<script th:src="@{/js/admin-feedback.js}"></script>
+<script th:src="@{/js/particles.js}"></script>
 </body>
 </html>

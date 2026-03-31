@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>My Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/global.css}">
     <link rel="stylesheet" th:href="@{/css/profile.css}">
 </head>
@@ -10,6 +11,7 @@
 
 <div class="container">
 
+    <div class="app-name">SecureFeedback</div>
     <h2>My Profile</h2>
 
     <div class="alert-success" th:if="${param.updated}">Profile updated successfully.</div>
@@ -26,27 +28,28 @@
         </div>
     </div>
 
-    <h3>Edit Details</h3>
-
     <form th:action="@{/profile}" th:object="${form}" method="post">
 
-        <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" th:field="*{firstName}" maxlength="50">
-            <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+        <div class="grid-2">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" th:field="*{firstName}" maxlength="50">
+                <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" th:field="*{lastName}" maxlength="50">
+                <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" th:field="*{lastName}" maxlength="50">
-            <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
-        </div>
-
-        <div class="form-group">
+        <div class="form-group" style="margin-top: 16px;">
             <label for="email">Email</label>
             <input type="email" id="email" th:field="*{email}" maxlength="100">
             <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
+
+        <hr class="divider">
 
         <button type="submit">Save Changes</button>
 
@@ -54,11 +57,12 @@
 
     <div class="text-center">
         <a th:href="@{/change-password}">Change Password</a>
-        &nbsp;|&nbsp;
+        &nbsp;·&nbsp;
         <a th:href="@{/home}">Back to Home</a>
     </div>
 
 </div>
 
+<script th:src="@{/js/particles.js}"></script>
 </body>
 </html>

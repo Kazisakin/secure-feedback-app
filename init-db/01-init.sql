@@ -15,5 +15,5 @@ CREATE TABLE IF NOT EXISTS feedback (
     email VARCHAR(255) NOT NULL,
     message VARCHAR(1000) NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
-    user_id BIGINT NOT NULL REFERENCES users(id)
+    user_id BIGINT REFERENCES users(id)
 );

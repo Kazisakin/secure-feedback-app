@@ -1,11 +1,13 @@
 package com.secureapp.controller;
 
+import com.secureapp.config.SecurityConfig;
 import com.secureapp.service.CustomUserDetailsService;
 import com.secureapp.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -14,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.Mockito.*;
 
 @WebMvcTest(RegistrationController.class)
+@Import(SecurityConfig.class)
 class RegistrationControllerTest {
 
     @Autowired
@@ -35,8 +38,8 @@ class RegistrationControllerTest {
                 .param("lastName", "Doe")
                 .param("email", "john@example.com")
                 .param("username", "existinguser")
-                .param("password", "Password1!")
-                .param("confirmPassword", "Password1!"))
+                .param("password", "Password1!secure")
+                .param("confirmPassword", "Password1!secure"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("register"))
                 .andExpect(model().attributeExists("registrationError"));
