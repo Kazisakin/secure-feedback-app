@@ -27,23 +27,31 @@ public class UserService {
     }
 
     @Transactional
-    public boolean updateProfile(String username, UpdateProfileForm form) {
+    public String updateProfile(String username, UpdateProfileForm form) {
         User user = userRepository.findByUsername(username).orElse(null);
         if (user == null) {
-            return false;
+            return "error";
         }
 
         String newEmail = form.getEmail().toLowerCase();
 
         if (!user.getEmail().equals(newEmail) && userRepository.existsByEmail(newEmail)) {
-            return false;
+            return "email_taken";
+        }
+
+        boolean unchanged = user.getFirstName().equals(form.getFirstName())
+                && user.getLastName().equals(form.getLastName())
+                && user.getEmail().equals(newEmail);
+
+        if (unchanged) {
+            return "no_changes";
         }
 
         user.setFirstName(form.getFirstName());
         user.setLastName(form.getLastName());
         user.setEmail(newEmail);
         userRepository.save(user);
-        return true;
+        return "updated";
     }
 
     public boolean usernameExists(String username) {

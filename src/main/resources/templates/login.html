@@ -15,7 +15,6 @@
     <h2>Welcome Back</h2>
 
     <div class="alert-error" th:if="${param.error}">Invalid username or password.</div>
-    <div class="alert-success" th:if="${param.logout}">You have been logged out successfully.</div>
     <div class="alert-success" th:if="${param.registered}">Registration successful. Please log in.</div>
 
     <form th:action="@{/login}" method="post">
@@ -44,6 +43,10 @@
 
     <div class="text-center">
         Don't have an account? <a th:href="@{/register}">Register here</a>
+    </div>
+
+    <div class="text-center">
+        <a th:href="@{/feedback}">Submit feedback as guest</a>
     </div>
 
 </div>

@@ -28,8 +28,9 @@ public class FeedbackController {
     }
 
     @GetMapping
-    public String feedbackPage(Model model) {
+    public String feedbackPage(Model model, Principal principal) {
         model.addAttribute("feedbackForm", new FeedbackForm());
+        model.addAttribute("isGuest", principal == null);
         return "feedback";
     }
 
@@ -48,6 +49,7 @@ public class FeedbackController {
 
             if (!guestRateLimitService.isAllowed(ip)) {
                 model.addAttribute("rateLimitError", "You have reached the maximum of 3 submissions per hour. Please try again later.");
+                model.addAttribute("isGuest", true);
                 return "feedback";
             }
 
@@ -61,6 +63,7 @@ public class FeedbackController {
         }
 
         if (result.hasErrors()) {
+            model.addAttribute("isGuest", isGuest);
             return "feedback";
         }
 
