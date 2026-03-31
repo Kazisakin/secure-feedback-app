@@ -59,6 +59,8 @@ public class FeedbackController {
 
             if (form.getEmail() == null || form.getEmail().isBlank()) {
                 result.rejectValue("email", "required", "Email is required.");
+            } else if (!form.getEmail().matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+                result.rejectValue("email", "invalid", "Enter a valid email address.");
             }
         }
 
