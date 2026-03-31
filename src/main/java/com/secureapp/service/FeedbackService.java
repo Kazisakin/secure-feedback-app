@@ -5,6 +5,7 @@ import com.secureapp.entity.Feedback;
 import com.secureapp.entity.User;
 import com.secureapp.repository.FeedbackRepository;
 import com.secureapp.repository.UserRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -43,6 +44,6 @@ public class FeedbackService {
     }
 
     public List<Feedback> getAllFeedback() {
-        return feedbackRepository.findAll();
+        return feedbackRepository.findAll(Sort.by(Sort.Direction.ASC, "createdAt"));
     }
 }
