@@ -15,10 +15,11 @@
     <div class="app-name">SecureFeedback</div>
     <h2>Submit Feedback</h2>
 
+    <div class="alert-error" th:if="${adminError}">Admins are not permitted to submit feedback.</div>
     <div class="alert-success" th:if="${param.submitted}">Your feedback has been submitted.</div>
     <div class="alert-error" th:if="${rateLimitError}" th:text="${rateLimitError}"></div>
 
-    <div th:if="${!param.submitted}">
+    <div th:if="${!param.submitted and !adminError}">
 
         <form th:action="@{/feedback}" th:object="${feedbackForm}" method="post">
 
@@ -53,6 +54,10 @@
             </span>
         </div>
 
+    </div>
+
+    <div class="text-center" th:if="${adminError}">
+        <a th:href="@{/admin}">Back to Admin Dashboard</a>
     </div>
 
     <div class="text-center" th:if="${param.submitted}">

@@ -4,6 +4,7 @@ import com.secureapp.config.SecurityConfig;
 import com.secureapp.service.CustomUserDetailsService;
 import com.secureapp.service.FeedbackService;
 import com.secureapp.service.GuestRateLimitService;
+import com.secureapp.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -28,6 +29,9 @@ class FeedbackControllerTest {
 
     @MockBean
     private GuestRateLimitService guestRateLimitService;
+
+    @MockBean
+    private UserService userService;
 
     @MockBean
     private CustomUserDetailsService customUserDetailsService;

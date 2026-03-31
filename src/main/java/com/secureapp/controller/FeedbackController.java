@@ -3,6 +3,7 @@ package com.secureapp.controller;
 import com.secureapp.dto.FeedbackForm;
 import com.secureapp.service.FeedbackService;
 import com.secureapp.service.GuestRateLimitService;
+import com.secureapp.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -21,14 +22,25 @@ public class FeedbackController {
 
     private final FeedbackService feedbackService;
     private final GuestRateLimitService guestRateLimitService;
+    private final UserService userService;
 
-    public FeedbackController(FeedbackService feedbackService, GuestRateLimitService guestRateLimitService) {
+    public FeedbackController(FeedbackService feedbackService, GuestRateLimitService guestRateLimitService, UserService userService) {
         this.feedbackService = feedbackService;
         this.guestRateLimitService = guestRateLimitService;
+        this.userService = userService;
+    }
+
+    private boolean isAdmin(Principal principal) {
+        if (principal == null) return false;
+        return "ADMIN".equals(userService.getUserByUsername(principal.getName()).getRole());
     }
 
     @GetMapping
     public String feedbackPage(Model model, Principal principal) {
+        if (isAdmin(principal)) {
+            model.addAttribute("adminError", true);
+            return "feedback";
+        }
         model.addAttribute("feedbackForm", new FeedbackForm());
         model.addAttribute("isGuest", principal == null);
         return "feedback";
@@ -41,6 +53,11 @@ public class FeedbackController {
             Principal principal,
             HttpServletRequest request,
             Model model) {
+
+        if (isAdmin(principal)) {
+            model.addAttribute("adminError", true);
+            return "feedback";
+        }
 
         boolean isGuest = (principal == null);
 
@@ -59,8 +76,6 @@ public class FeedbackController {
 
             if (form.getEmail() == null || form.getEmail().isBlank()) {
                 result.rejectValue("email", "required", "Email is required.");
-            } else if (!form.getEmail().matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
-                result.rejectValue("email", "invalid", "Enter a valid email address.");
             }
         }
 
