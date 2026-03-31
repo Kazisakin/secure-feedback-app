@@ -1,44 +1,49 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
     <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 <body>
 
 <div class="container">
 
-    <h2>Welcome, <span th:text="${username}"></span></h2>
+    <div class="app-name">SecureFeedback</div>
+    <p class="welcome">Hello, <span th:text="${username}"></span></p>
+    <h2>Dashboard</h2>
 
-    <div class="alert-success" th:if="${param.passwordChanged}">
-        Password changed successfully.
+    <div class="alert-success" th:if="${param.passwordChanged}">Password changed successfully.</div>
+    <div class="alert-success" th:if="${param.profileUpdated}">Profile updated successfully.</div>
+
+    <div sec:authorize="hasRole('USER')">
+        <div class="section-label">Feedback</div>
+        <a class="btn" th:href="@{/feedback}">Submit Feedback</a>
     </div>
 
-    <hr class="divider">
-
-    <div th:if="${#authorization.expression('hasRole(''USER'')')}">
-    <h3>Feedback</h3>
-    <a class="btn" th:href="@{/feedback}">Submit Feedback</a>
+    <div sec:authorize="hasRole('ADMIN')">
+        <hr class="section-divider">
+        <div class="section-label">Admin</div>
+        <a class="btn" th:href="@{/admin}">Admin Dashboard</a>
     </div>
-    
-    <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-    <hr class="divider">
-    <h3>Admin</h3>
-    <a class="btn" th:href="@{/admin}">Go to Admin Dashboard</a>
-</div>
 
-    <hr class="divider">
+    <hr class="section-divider">
 
-    <h3>Profile</h3>
+    <div class="section-label">Profile</div>
     <a class="btn btn-grey" th:href="@{/profile}">Edit Profile</a>
     <a class="btn btn-grey" th:href="@{/change-password}">Change Password</a>
 
+    <hr class="section-divider">
+
     <form th:action="@{/logout}" method="post">
-        <button type="submit" class="btn btn-grey">Logout</button>
+        <button type="submit" class="btn btn-danger">Logout</button>
     </form>
 
 </div>
 
+<script th:src="@{/js/particles.js}"></script>
 </body>
 </html>

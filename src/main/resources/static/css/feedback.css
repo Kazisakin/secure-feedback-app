@@ -1,24 +1,19 @@
 .container {
-    max-width: 500px;
-    margin: 60px auto;
-    padding: 30px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    width: 460px;
+    padding: 44px 40px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 14px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.45s ease;
 }
 
-.form-group {
-    margin-bottom: 15px;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    height: 140px;
-    resize: vertical;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
+    height: 130px;
 }

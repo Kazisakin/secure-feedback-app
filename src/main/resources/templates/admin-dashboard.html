@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
     <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
-<div class="container">
+
+<div class="container-dashboard">
+
+    <div class="app-name">SecureFeedback</div>
     <h2>Admin Dashboard</h2>
 
     <div class="stats">
@@ -14,18 +19,23 @@
             <h3>Total Feedback</h3>
             <p th:text="${feedbackCount}"></p>
         </div>
-
         <div class="card">
             <h3>Total Users</h3>
             <p th:text="${userCount}"></p>
         </div>
     </div>
 
-    <hr class="divider">
+    <div class="section-label">Management</div>
 
     <a class="btn" th:href="@{/admin/feedback}">View All Feedback</a>
     <a class="btn" th:href="@{/admin/users}">Manage Users</a>
-    <a class="btn btn-grey" th:href="@{/home}">Back Home</a>
+
+    <hr class="divider">
+
+    <a class="btn btn-grey" th:href="@{/home}">Back to Home</a>
+
 </div>
+
+<script th:src="@{/js/particles.js}"></script>
 </body>
 </html>

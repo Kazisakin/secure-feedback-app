@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Submit Feedback</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/global.css}">
     <link rel="stylesheet" th:href="@{/css/feedback.css}">
 </head>
@@ -10,29 +12,47 @@
 
 <div class="container">
 
+    <div class="app-name">SecureFeedback</div>
     <h2>Submit Feedback</h2>
 
-    <div class="alert-success" th:if="${param.submitted}">
-        Your feedback has been submitted successfully!
-    </div>
+    <div class="alert-success" th:if="${param.submitted}">Your feedback has been submitted.</div>
+    <div class="alert-error" th:if="${rateLimitError}" th:text="${rateLimitError}"></div>
 
     <form th:action="@{/feedback}" th:object="${feedbackForm}" method="post">
 
+        <div class="form-group" sec:authorize="isAnonymous()">
+            <label for="name">Name</label>
+            <input type="text" id="name" th:field="*{name}" maxlength="100">
+            <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+
+        <div class="form-group" sec:authorize="isAnonymous()">
+            <label for="email">Email</label>
+            <input type="email" id="email" th:field="*{email}" maxlength="255">
+            <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+
         <div class="form-group">
             <label for="message">Message</label>
-            <textarea id="message" th:field="*{message}" placeholder="Write your feedback here (10-1000 characters)"></textarea>
+            <textarea id="message" th:field="*{message}" placeholder="Write your feedback here (10–1000 characters)"></textarea>
             <div class="error" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></div>
         </div>
+
+        <hr class="divider">
 
         <button type="submit">Submit Feedback</button>
 
     </form>
 
     <div class="text-center">
-        <a th:href="@{/home}">Back to Home</a>
+        <a th:href="@{/home}" sec:authorize="isAuthenticated()">Back to Home</a>
+        <span sec:authorize="isAnonymous()">
+            <a th:href="@{/login}">Login</a> &nbsp;·&nbsp; <a th:href="@{/register}">Register</a>
+        </span>
     </div>
 
 </div>
 
+<script th:src="@{/js/particles.js}"></script>
 </body>
 </html>
