@@ -47,14 +47,18 @@ public class ProfileController {
             return "profile";
         }
 
-        boolean success = userService.updateProfile(principal.getName(), form);
+        String updateResult = userService.updateProfile(principal.getName(), form);
 
-        if (!success) {
+        if (updateResult.equals("email_taken")) {
             User user = userService.getUserByUsername(principal.getName());
             model.addAttribute("username", user.getUsername());
             model.addAttribute("createdAt", user.getCreatedAt());
             model.addAttribute("error", "That email is already in use by another account.");
             return "profile";
+        }
+
+        if (updateResult.equals("no_changes")) {
+            return "redirect:/profile?nochanges";
         }
 
         return "redirect:/profile?updated";

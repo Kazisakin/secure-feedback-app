@@ -20,13 +20,13 @@
 
     <form th:action="@{/feedback}" th:object="${feedbackForm}" method="post">
 
-        <div class="form-group" sec:authorize="isAnonymous()">
+        <div class="form-group" th:if="${isGuest}">
             <label for="name">Name</label>
             <input type="text" id="name" th:field="*{name}" maxlength="100">
             <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         </div>
 
-        <div class="form-group" sec:authorize="isAnonymous()">
+        <div class="form-group" th:if="${isGuest}">
             <label for="email">Email</label>
             <input type="email" id="email" th:field="*{email}" maxlength="255">
             <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
@@ -45,8 +45,8 @@
     </form>
 
     <div class="text-center">
-        <a th:href="@{/home}" sec:authorize="isAuthenticated()">Back to Home</a>
-        <span sec:authorize="isAnonymous()">
+        <a th:href="@{/home}" th:if="${!isGuest}">Back to Home</a>
+        <span th:if="${isGuest}">
             <a th:href="@{/login}">Login</a> &nbsp;·&nbsp; <a th:href="@{/register}">Register</a>
         </span>
     </div>
